@@ -11,7 +11,6 @@
 
 html, body { height: 100%; font-family: 'Questrial', sans-serif;}
  
-.landing-page h1, .landing-page  h2, .landing-page h3, .landing-page h4, .landing-page h5 { color: #000; margin-top: 0; }
 .landing-page img { max-width: 83%; }
 
 
@@ -44,37 +43,7 @@ html, body { height: 100%; font-family: 'Questrial', sans-serif;}
 
 
 
-.social-roll {
-height: 50px;
-width: 50px;
-margin: 10px;
-border-radius: 50%;
--webkit-transition: all ease 0.3s;
--moz-transition: all ease 0.3s;
--o-transition: all ease 0.3s;
--ms-transition: all ease 0.3s;
-transition: all ease 0.3s;
-margin:0px;
-}
-.social-roll img { max-width: 35px; max-height: 35px; }
-.hvr-bounce-in {
-    display: inline-block;
-    vertical-align: middle;
-    -webkit-transform: translateZ(0);
-    transform: translateZ(0);
-    box-shadow: 0 0 1px rgba(0, 0, 0, 0);
-    -webkit-backface-visibility: hidden;
-    backface-visibility: hidden;
-    -moz-osx-font-smoothing: grayscale;
-    -webkit-transition-duration: 0.5s;
-    transition-duration: 0.5s;
-}
-.hvr-bounce-in:hover, .hvr-bounce-in:focus, .hvr-bounce-in:active {
-    -webkit-transform: scale(1.2);
-    transform: scale(1.2);
-    -webkit-transition-timing-function: cubic-bezier(0.47, 2.02, 0.31, -0.36);
-    transition-timing-function: cubic-bezier(0.47, 2.02, 0.31, -0.36);
-}
+
 
 @media(max-width:767px) {
     .landing-page h1, .landing-page h2, .landing-page h4, .landing-page h5 { margin-top: 0.10em; margin-bottom: 0.33em; font-weight: bold;  font-size: 1.0em;}
