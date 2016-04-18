@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html ng-app>
+<html ng-app="app">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta content="True" name="HandheldFriendly">
@@ -12,24 +12,76 @@
     <link href="./dk/css/dk_style.css" rel="stylesheet">
 </head>
 
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular.min.js"></script>
+<body>
 
- <script>
-    function LocationController($scope){
-      $scope.locations = [
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular-route.min.js"></script>
+
+
+
+
+<!-- Template -->   
+<script type="text/ng-template" id="/categories.html">
+        <select style="width: 350px">
+            <option ng-repeat="category in categories" value="category.value"> {{ category.name }} </option>
+            </option>
+        </select>
+</script>
+<!-- Template -->   
+<script type="text/ng-template" id="/states.html">
+        <select style="width: 350px">
+            <option ng-repeat="state in states" value="state.value"> {{ state.name }} </option>
+            </option>
+        </select>
+</script>
+
+
+<script>
+
+ angular.module('app', ['ngRoute'])
+
+
+   //---------------
+   // Controllers
+   //---------------
+  .controller('CategoryController', ['$scope', function ($scope) {
+    $scope.categories = [
+        { name: 'Local',  value: 'Local' },
+        { name: 'State', value: 'State' },
+        { name: 'Nationals', value: 'Nationals' },
+    ];
+  }])
+  
+  .controller('StateController', ['$scope', function ($scope) {
+    $scope.states = [
         { name: 'NSW', value: 'NSW' },
         { name: 'VIC', value: 'VIC' },
         { name: 'ACT', value: 'ACT' },
         { name: 'NT',  value: 'NT' },
         { name: 'WA',  value: 'WA' },
         { name: 'SA',  value: 'SA' },
-      ]
-    }
-  </script>
+    ];
+  }])
 
 
-<body ng-controller="LocationController">
+    //---------------
+    // Routes
+    //---------------
+  .config(['$routeProvider', function ($routeProvider) {
+    $routeProvider
+      .when('/', {
+        templateUrl: '/categories.html',
+        controller: 'CategoryController'
+      })
 
+      .when('/', {
+        templateUrl: '/states.html',
+        controller: 'StateController'
+      });
+  }]);
+</script>
 
 
  <!-- Landing -->
@@ -37,7 +89,7 @@
     
         <div class="row">
             <div class="col-xs-12">
-                 <h1 class="text-align-center">Sing Up Form</h1>
+                 <h1 class="text-align-center">Sign Up Form</h1>
                  <h1 class="text-align-center">Hello {{ clubName }}</h1>
             </div>
 
@@ -54,12 +106,13 @@
             <div class="col-xs-12 text-align-center space-between" >
                 <input class="text-align-center" style="width: 350px" type="text" placeholder="Club Category" ng-model="clubCategory"></input>
             </div>
-            <div class="col-xs-12 text-align-center space-between" >
-                <select style="width: 350px" placeholder="Club Location">
-                <option ng-repeat="location in locations" value="location.value"> {{ location.name }} </option>
-                </option>
-                </select>
-            </div>
+        
+<ng-view></ng-view>
+
+
+
+
+
             <div class="col-xs-12 text-align-center space-between" >
                 <input class="text-align-center" type="file" name="logo" accept="image/*" style="width: 350px; display: -webkit-inline-box!important;" ng-model="clubLogo"></input>
             </div>
