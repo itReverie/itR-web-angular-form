@@ -1,6 +1,10 @@
 <?php
 include 'Classes/PHPExcel/IOFactory.php';
 
+
+
+
+
 function validateExcelFile($temporary_file)
 {
     $valid = false;
@@ -32,6 +36,7 @@ function validateImageFile($temporary_file)
 
   return $valid ;
 }
+
 
 
 
@@ -98,27 +103,43 @@ else
 
 
 
-
-
-
-
-
-  if(isset($_POST['submit']))
-  {
-    echo="Error, you need to submit a form."
-  }
-
-  $message = loadFile('Image', 'logo');
-
-  if($message ){
-   $message = loadFile('Excel', 'members');
-  }
-
-
-
-if($message == '')
+function sendEmail($clubName, $category, $country, $state, $firstName, $lastName, $email)
 {
+  
+    $email_subject = "New Club Subscription: $clubName";
+    $email_body = "There is a new Club Subscription form with the following information:\n \n ".
+    "Club Name: $clubName.\n ".
+    "Category:  $category.\n ".
+    "Country:  $country.\n ".
+    "State:  $state.\n ".
+    "Board member First Name:  $firstName.\n ".
+    "Board member Last Name:  $lastName.\n ".
+    "Board member email:  $email.\n  \n".
+    "See attached their logo and members list.\n ";
 
+
+     $to = "contact@dragonking.com.au";
+     //$headers = "";
+     mail($to,$email_subject,$email_body);//,$headers
+     
+     
+}
+
+
+
+
+
+
+
+  if(!isset($_POST['submit']))
+  {
+    echo "Error, you need to submit a form.";
+  }
+
+
+  //$message = loadFile('Image', 'logo');
+  //$message = loadFile('Excel', 'members');
+  
 
   $clubName = $_POST['clubName'];
   $category = $_POST['category'];
@@ -129,38 +150,17 @@ if($message == '')
   $email = $_POST['email'];
 
 
-//Validate that the fields are not empty
-if(empty($clubName)|| empty($firstName)|| empty($lastName)|| empty($email))
-{
-  print ("Missing mandatory fields.");
-  echo "Missing mandatory fields.";
-  exit;
-}
+  //Validate that the fields are not empty
+  if(empty($clubName)|| empty($firstName)|| empty($lastName)|| empty($email))
+  {
+    print ("Missing mandatory fields.");
+    echo "Missing mandatory fields.";
+    exit;
+  }
 
+  
+  sendEmail( $clubName, $category, $country, $state, $firstName, $lastName, $email );
 
-
-  $email_subject = "New Club submission: $clubName";
-  $email_body = "There is a new Club Subscription form with the following information:\n \n ".
-    "Club Name: $clubName.\n ".
-    "Category:  $category.\n ".
-    "Country:  $country.\n ".
-    "State:  $state.\n ".
-    "Board member First Name:  $firstName.\n ".
-    "Board member Last Name:  $lastName.\n ".
-    "Board member email:  $email.\n  \n".
-    "See attached their logo and members list.\n ".
-
-print ($email_body);
-
-  $to = "contact@dragonking.com.au";
-  $headers = "";
-  mail($to,$email_subject,$email_body,$headers);
-
-
-//header("Location:  https://www.bpoint.com.au/payments/SPORTSKING");
-
-}
-
-
+     //header("Location:  https://www.bpoint.com.au/payments/SPORTSKING");
 
  ?>
