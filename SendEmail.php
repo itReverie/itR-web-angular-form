@@ -1,4 +1,6 @@
 <?php
+
+
 if(isset($_POST['submit']))
 {
   echo="Error, you need to submit a form."
@@ -12,11 +14,13 @@ if(isset($_POST['submit']))
   $lastName = $_POST['lastName'];
   $email = $_POST['email'];
 
+
 //Validate that the fields are not empty
 if(empty($clubName)|| empty($firstName)|| empty($lastName)|| empty($email))
 {
-echo "Missing mandatory fields.";
-exit;
+  print ("Missing mandatory fields.");
+  echo "Missing mandatory fields.";
+  exit;
 }
 
 
@@ -33,11 +37,12 @@ exit;
 		"See attached their logo and members list.\n ".
 
 
+
   $to = "contact@dragonking.com.au";
   $headers = "";
   mail($to,$email_subject,$email_body,$headers);
-
+/*
 
 header("Location:  https://www.bpoint.com.au/payments/SPORTSKING");
-
+*/
  ?>
