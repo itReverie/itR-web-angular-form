@@ -1,7 +1,7 @@
 <?php
 include 'Classes/PHPExcel/IOFactory.php';
-
-
+require_once('PHPMailer/class.phpmailer.php');
+include("PHPMailer/class.smtp.php");
 
 
 
@@ -20,7 +20,6 @@ foreach ($types as $type) {
   }    
   return $valid ;
 }
-
 
 
 
@@ -99,15 +98,26 @@ else
 }// end of function loadLogo
 
 
+    
 
 
 
-
-function sendEmail($clubName, $category, $country, $state, $firstName, $lastName, $email)
+function sendEmail($clubName, $category, $country, $state, $firstName, $lastName, $email, $logo, $members)
 {
-  
-    $email_subject = "New Club Subscription: $clubName";
-    $email_body = "There is a new Club Subscription form with the following information:\n \n ".
+
+
+$host = "smtp.gmail.com";//ssl://
+$username = "youremail@gmail.com";
+$password = "yourpassword";
+$Port = 587;
+$file_dir  = $_SERVER['DOCUMENT_ROOT'] . "/uploads/";
+
+
+$to = "contact@dragonking.com.au";
+$company = "Sports King Applications";
+$email_subject = "New Club Subscription: $clubName";
+$email_body =  "Hello, \n  \n".
+    "There is a new club subscription form with the following information:\n \n ".
     "Club Name: $clubName.\n ".
     "Category:  $category.\n ".
     "Country:  $country.\n ".
@@ -115,19 +125,41 @@ function sendEmail($clubName, $category, $country, $state, $firstName, $lastName
     "Board member First Name:  $firstName.\n ".
     "Board member Last Name:  $lastName.\n ".
     "Board member email:  $email.\n  \n".
-    "See attached their logo and members list.\n ";
+    "See attached their logo and members list.\n \n".
+    "Regards, \n".
+    "Sports King Applications (website) ";
 
 
-     $to = "contact@dragonking.com.au";
-     //$headers = "";
-     mail($to,$email_subject,$email_body);//,$headers
-     
-     
+
+//Create a new PHPMailer instance
+$mail = new PHPMailer();
+$mail->isSMTP();
+$mail->Host = $host;
+$mail->Port = $Port;
+//$mail->SMTPDebug  = 1; 
+
+
+$mail->SMTPSecure = 'ssl'; 
+$mail->SMTPAuth = true;
+$mail->Username = $username;
+$mail->Password = $password;
+
+
+$mail->SetFrom( $username, $username);
+$mail->Subject   = $email_subject;
+$mail->Body      = $email_body;
+$mail->AddAddress( $to , $company );
+$mail->AddAttachment( $file_dir.$logo);
+$mail->AddAttachment( $file_dir.$members);
+
+if(!$mail->Send()) {
+    echo "<br/>  Mailer Error: " . $mail->ErrorInfo;
+} else {
+    echo "<br/>  Message sent!";
 }
 
 
-
-
+}
 
 
 
@@ -137,10 +169,11 @@ function sendEmail($clubName, $category, $country, $state, $firstName, $lastName
   }
 
 
-  //$message = loadFile('Image', 'logo');
-  //$message = loadFile('Excel', 'members');
+  //Loading the images into the server
+  $message = loadFile('Image', 'logo');
+  $message = loadFile('Excel', 'members');
   
-
+  //Getting the information
   $clubName = $_POST['clubName'];
   $category = $_POST['category'];
   $country = $_POST['country'];
@@ -148,9 +181,10 @@ function sendEmail($clubName, $category, $country, $state, $firstName, $lastName
   $firstName = $_POST['firstName'];
   $lastName = $_POST['lastName'];
   $email = $_POST['email'];
+  $logo = $_FILES['logo']['name'];
+  $members = $_FILES['members']['name'];
 
-
-  //Validate that the fields are not empty
+  //Validate that the fields are not empty. It is validated in the client side. Double validation just in case.
   if(empty($clubName)|| empty($firstName)|| empty($lastName)|| empty($email))
   {
     print ("Missing mandatory fields.");
@@ -158,8 +192,9 @@ function sendEmail($clubName, $category, $country, $state, $firstName, $lastName
     exit;
   }
 
-  
-  sendEmail( $clubName, $category, $country, $state, $firstName, $lastName, $email );
+
+  //Send Email
+  sendEmail( $clubName, $category, $country, $state, $firstName, $lastName, $email, $logo, $members  );
 
      //header("Location:  https://www.bpoint.com.au/payments/SPORTSKING");
 
