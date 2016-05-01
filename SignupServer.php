@@ -107,8 +107,8 @@ function sendEmail($clubName, $category, $country, $state, $firstName, $lastName
 
 
 $host = "smtp.gmail.com";//ssl://
-$username = "youremail@gmail.com";
-$password = "yourpassword";
+$username = "brendadhk@gmail.com";
+$password = "8R3ND4-1";
 $Port = 587;
 $file_dir  = $_SERVER['DOCUMENT_ROOT'] . "/uploads/";
 
@@ -163,6 +163,8 @@ if(!$mail->Send()) {
 
 
 
+
+
   if(!isset($_POST['submit']))
   {
     echo "Error, you need to submit a form.";
@@ -184,11 +186,24 @@ if(!$mail->Send()) {
   $logo = $_FILES['logo']['name'];
   $members = $_FILES['members']['name'];
 
+
+
+
+
   //Validate that the fields are not empty. It is validated in the client side. Double validation just in case.
   if(empty($clubName)|| empty($firstName)|| empty($lastName)|| empty($email))
   {
-    print ("Missing mandatory fields.");
-    echo "Missing mandatory fields.";
+    //print ("<br />Missing mandatory fields.");
+    //$_SESSION['Error'] = "You left one or more of the required fields.";
+
+
+    //die("errrrroorrr");
+
+    $msg = base64_encode( json_encode("You left one or more of the required fields."));
+    header("Location:http://localhost/~Bren/signupform.php?msg=$msg");
+
+
+
     exit;
   }
 
