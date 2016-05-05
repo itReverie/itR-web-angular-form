@@ -122,9 +122,9 @@ $email_body =  "Hello, \n  \n".
     "Category:  $category.\n ".
     "Country:  $country.\n ".
     "State:  $state.\n ".
-    "Board member First Name:  $firstName.\n ".
-    "Board member Last Name:  $lastName.\n ".
-    "Board member email:  $email.\n  \n".
+    "Executive member First Name:  $firstName.\n ".
+    "Executive member Last Name:  $lastName.\n ".
+    "Executive member email:  $email.\n  \n".
     "See attached their logo and members list.\n \n".
     "Regards, \n".
     "Sports King Applications (website) ";
@@ -149,8 +149,8 @@ $mail->SetFrom( $username, $username);
 $mail->Subject   = $email_subject;
 $mail->Body      = $email_body;
 $mail->AddAddress( $to , $company );
-$mail->AddAttachment( $file_dir.$logo);
-$mail->AddAttachment( $file_dir.$members);
+//$mail->AddAttachment( $file_dir.$logo);
+//$mail->AddAttachment( $file_dir.$members);
 
 if(!$mail->Send()) {
     echo "<br/>  Mailer Error: " . $mail->ErrorInfo;
@@ -162,55 +162,41 @@ if(!$mail->Send()) {
 }
 
 
-
-
-
   if(!isset($_POST['submit']))
   {
     echo "Error, you need to submit a form.";
   }
 
 
+  $data = file_get_contents("php://input");
+  $dataJsonDecode     = json_decode($data);
+  
+
   //Loading the images into the server
-  $message = loadFile('Image', 'logo');
-  $message = loadFile('Excel', 'members');
+  //$message = loadFile('Image', 'logo');
+  //$message = loadFile('Excel', 'members');
   
   //Getting the information
-  $clubName = $_POST['clubName'];
-  $category = $_POST['category'];
-  $country = $_POST['country'];
-  $state = $_POST['state'];
-  $firstName = $_POST['firstName'];
-  $lastName = $_POST['lastName'];
-  $email = $_POST['email'];
-  $logo = $_FILES['logo']['name'];
-  $members = $_FILES['members']['name'];
-
-
-
+  $clubName = $dataJsonDecode->clubName;
+  $category = $dataJsonDecode->category;
+  $country = $dataJsonDecode->country;
+  $state = $dataJsonDecode->state;
+  $firstName = $dataJsonDecode->firstName;
+  $lastName = $dataJsonDecode->lastName;
+  $email = $dataJsonDecode->email;
+  $logo = $dataJsonDecode->logo;
+  $members = $dataJsonDecode->members;
 
 
   //Validate that the fields are not empty. It is validated in the client side. Double validation just in case.
-  if(empty($clubName)|| empty($firstName)|| empty($lastName)|| empty($email))
-  {
-    //print ("<br />Missing mandatory fields.");
-    //$_SESSION['Error'] = "You left one or more of the required fields.";
-
-
-    //die("errrrroorrr");
-
-    $msg = base64_encode( json_encode("You left one or more of the required fields."));
-    header("Location:http://localhost/~Bren/signupform.php?msg=$msg");
-
-
-
-    exit;
-  }
+  //if(empty($firstName)|| empty($lastName)|| empty($email))
+  //{ exit;  }
 
 
   //Send Email
   sendEmail( $clubName, $category, $country, $state, $firstName, $lastName, $email, $logo, $members  );
 
-     //header("Location:  https://www.bpoint.com.au/payments/SPORTSKING");
+
+  //header("Location:  https://www.bpoint.com.au/payments/SPORTSKING");
 
  ?>
