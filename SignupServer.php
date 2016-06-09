@@ -9,7 +9,7 @@ include("PHPMailer/class.smtp.php");
 function validateExcelFile($temporary_file)
 {
     $valid = false;
-    $types = array('Excel2007', 'Excel5','application/vnd.openxmlformats-officedocument.spreadsheetml.sheet','text/xls','text/xlsx');//
+    $types = array('Excel2007', 'Excel5','application/vnd.openxmlformats-officedocument.spreadsheetml.sheet','text/xls','text/xlsx');
 
 foreach ($types as $type) {
       print("<br/> Type File:".$type);
@@ -49,7 +49,7 @@ $file_error = $_FILES[$elementName]['error'];
 $file_tmp= $_FILES[$elementName]['tmp_name'];
 
 $target_dir = $_SERVER['DOCUMENT_ROOT'] . "/uploads/";
-$target_file = $target_dir . $file_name;//basename($_FILES["photo"]["name"]);
+$target_file = $target_dir . $file_name;
 print("<br/> Target File:".$target_file);
 
   //if they DID upload a file...
@@ -108,8 +108,8 @@ function sendEmail($clubName, $category, $country, $state, $firstName, $lastName
 
 
 $host = "smtp.gmail.com";//ssl://
-$username = "xxxx@gmail.com";
-$password = "xxxxx";
+$username = "xxxxx@gmail.com";
+$password = "xxxxxx";
 $Port = 587;
 $file_dir  = $_SERVER['DOCUMENT_ROOT'] . "/uploads/";
 
@@ -168,25 +168,6 @@ if(!$mail->Send()) {
     echo "Error, you need to submit a form.";
   }
 
-
-    //$_POST = json_decode(file_get_contents('php://input'), true);
-
-
-  //$data = file_get_contents("php://input");
-  //$dataJsonDecode     = json_decode($data);
-  //$clubName = $dataJsonDecode->clubName;
-  //$category = $dataJsonDecode->category;
-  //$country = $dataJsonDecode->country;
-  //$state = $dataJsonDecode->state;
-  //$firstName = $dataJsonDecode->firstName;
-  //$lastName = $dataJsonDecode->lastName;
-  //$email = $dataJsonDecode->email;
-  //$logo = $dataJsonDecode->logo;
-  //$members = $dataJsonDecode->members;
-
-
-
-
   //Getting the information
 
   $clubName = $_POST['clubName'];
@@ -200,18 +181,19 @@ if(!$mail->Send()) {
   $members = $_FILES[members]['name'];
 
     //Loading the files into the server
-    $message = loadFile('Image', 'logo');
-    $message = loadFile('Excel', 'members');
+  $message = loadFile('Image', 'logo');
+  $message = loadFile('Excel', 'members');
 
   //Validate that the fields are not empty. It is validated in the client side. Double validation just in case.
-  //if(empty($firstName)|| empty($lastName)|| empty($email))
-  //{ exit;  }
+  if(empty($firstName)|| empty($lastName)|| empty($email) ||
+     empty($clubName)|| empty($category)|| empty($country) || empty($state) )
+  { exit;  }
 
 
   //Send Email
   sendEmail( $clubName, $category, $country, $state, $firstName, $lastName, $email, $logo, $members );
 
 
-  //header("Location:  https://www.bpoint.com.au/payments/SPORTSKING");
+  header("Location:  https://www.bpoint.com.au/payments/SPORTSKING");
 
  ?>

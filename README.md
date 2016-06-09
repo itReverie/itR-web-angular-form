@@ -8,4 +8,6 @@ There are two third party libraries used:
 - https://github.com/PHPOffice/PHPExcel (To validate an correct Excel file) Copy the classes folder and paste it on the root.
 - https://github.com/PHPMailer/PHPMailer (To send the email on the backend) Copy the PHPMailer folder and paste it on the root and you will also need to configure your smtp server.
 
+![logic]( http://www.itreverie.com/githubimages/itR-web-angular-form.png)
+
 
