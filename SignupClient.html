@@ -1,28 +1,7 @@
-<html ng-app="myApp">
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <meta content="True" name="HandheldFriendly">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-    <meta name="keywords" content="UI/UX Sign up form in Angular.js, PHP, bootstrap.">
-    <title>Subscription</title>
-   
-   <!-- Bootstrap core CSS -->
-    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap.min.css"/>
-    <!-- AngularJs ui-select CSS-->
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/angular-ui-select/0.13.2/select.min.css"/>
-    <!-- Highlight CSS-->
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.5/styles/color-brewer.min.css"/>
-    <link rel="stylesheet" href="./css/main.css" type="text/css"/>
-</head>
-
-<body role="document" ng-controller="index">
-
-
-<form name="Form3" id="form3" >
-<fieldset>
+<form action="../../uploadMembers.php" method="post" enctype="multipart/form-data" >
+<!-- Landing     -->
 <div class="container landing-page ">
 <div class="row">
-
 
 <!-----------------------------------CLUB INFORMATION-------------------------------------------->
 <div class="col-xs-12">
@@ -33,34 +12,18 @@
 <div class="col-xs-12">
 <h1 class="text-align-center">Club Information</h1>
 </div>
-
-
-<div class="col-xs-12 text-align-center space-between">
-<input class="form-control" type="text" placeholder="Club Name" name="clubName" id="clubName" ng-model="form3.clubName" validator="required"/>
-<span id="clubNameSubmit"></span> 
-</div>
-
-<div class="col-xs-12 text-align-center space-between">
-<select class="form-control" name="category" ng-model="form3.category"  validator="required" message-id="selectCategory">
-<option value="">Category</option>
+<div class="col-xs-12 text-align-center space-between"><input class="text-align-center" style="width: 350px;" type="text" placeholder="Club Name" name="clubName"/></div>
+<div class="col-xs-12 text-align-center space-between"><select style="width: 375px;height:40px;" name="category">
 <option value="Local">Local</option>
 <option value="State">State</option>
 <option value="National">National</option>
-</select>
-<span id="selectCategory"></span>
-</div>
-
+</select></div>
 <div class="col-xs-12 text-align-center space-between">
-<select class="form-control" name="country" ng-model="form3.country" validator="required"  message-id="selectCountry">
-<option value="">Country</option>
-<option value="Australia">Australia</option>
-</select>
-<span id="selectCountry"></span>
-</div>
-
+<select style="width: 375px;height:40px;" name="country">
+<option value="AUS">Australia</option>
+</select></div>
 <div class="col-xs-12 text-align-center space-between">
-<select class="form-control" name="state" ng-model="form3.state" validator="required" message-id="selectBlur">
-<option value="">State</option>
+<select style="width: 375px;height:40px;" name="state">
 <option value="NSW">NSW</option>
 <option value="ACT">ACT</option>
 <option value="VIC">VIC</option>
@@ -69,23 +32,17 @@
 <option value="WA">WA</option>
 <option value="NT">NT</option>
 <option value="TAS">TAS</option>
-</select>
-<span id="selectBlur"></span>
+</select></div>
+
+<div class="col-xs-12 text-align-center space-between">
+    Upload your logo (.jpg,.png): 
+    <input type="file" class="text-align-center" name="logo"/>
 </div>
 
 <div class="col-xs-12 text-align-center space-between">
-    Your Logo: 
-    <input type="file" name="logo" id="logo" ng-model="form3.logo" valid-method="submit" message-id="logoSubmit" />
-    <span id="logoSubmit"></span> 
+    Upload you list of members (Excel .xls) : 
+    <input type="file" class="text-align-center"  name="members"/>
 </div>
-
-<div class="col-xs-12 text-align-center space-between">
-    Your Members List: 
-    <input type="file" name="members" id="members"   ng-model="form3.members"  valid-method="submit" message-id="membersSubmit" />
-    <span id="membersSubmit"></span> 
-</div>
-
-
 
 
 
@@ -96,49 +53,17 @@
 
 </div>
 <div class="col-xs-12">
-<h1 class="text-align-center">Main Executive Member</h1>
+<h1 class="text-align-center">Main Board Member</h1>
 </div>
-
+<div class="col-xs-12 text-align-center space-between"><input class="text-align-center" style="width: 350px;" type="text" placeholder="First Name" name="firstName"/></div>
+<div class="col-xs-12 text-align-center space-between"><input class="text-align-center" style="width: 350px;" type="text" placeholder="Last Name" name="lastName"/></div>
+<div class="col-xs-12 text-align-center space-between"><input class="text-align-center" style="width: 350px;" type="email" placeholder="Email" name="email"/></div>
 <div class="col-xs-12 text-align-center space-between">
-<input class="form-control" type="text" name="firstName" id="firstName" ng-model="form3.firstName" validator="required" min="3" max="10" valid-method="submit" message-id="firstNameSubmit" placeholder="First Name" />
-<span id="firstNameSubmit"></span> 
-</div>
-
-<div class="col-xs-12 text-align-center space-between">
-<input class="form-control" type="text" name="lastName" id="lastName" ng-model="form3.lastName" validator="required" valid-method="submit" message-id="lastNameSubmit" placeholder="Last Name"/>
-<span id="lastNameSubmit"></span> 
-</div>
-
-<div class="col-xs-12 text-align-center space-between">
-<input class="form-control" type="text" name="email" id="email" ng-model="form3.email" validator="email" valid-method="submit" message-id="emailSubmit" placeholder="Email"/>
-<span id="emailSubmit"></span> 
-</div>
-
-<div class="col-xs-12 text-align-center space-between">
-<button class="btn btn-success" ng-click="form3.submit(Form3)">Subscribe</button>
+<input type="image" src="http://dragonking.com.au/wp-content/uploads/2016/04/signup-dk-btn-300x47.png" border="0" type="submit" value="submit" name="submit" alt="Submit" width="300" height="47" />
 </div>
 
 </div>
-
-
+<div class="row"></div>
 </div>
-</div>
-</fieldset>
+
 </form>
-
-
-
-<script src="//cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.5/highlight.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.8/angular-sanitize.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.14.3/ui-bootstrap-tpls.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.14.3/ui-bootstrap.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-select/0.13.2/select.min.js"></script>
-<script src="./js/angular-validation.js"></script>
-<script src="./js/angular-validation-rule.js"></script>
-<script src="./js/signup-validation.js"></script>
-
-</body>
-</html>
