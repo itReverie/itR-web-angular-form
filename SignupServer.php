@@ -108,8 +108,8 @@ function sendEmail($clubName, $category, $country, $state, $firstName, $lastName
 
 
 $host = "smtp.gmail.com";//ssl://
-$username = "brendadhk@gmail.com";
-$password = "ITz3L123@@";
+$username = "xxxx@gmail.com";
+$password = "xxxxx";
 $Port = 587;
 $file_dir  = $_SERVER['DOCUMENT_ROOT'] . "/uploads/";
 
