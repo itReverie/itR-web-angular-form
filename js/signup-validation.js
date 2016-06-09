@@ -10,7 +10,6 @@
     var defaultMsg;
     var expression;
 
-
     /**
      * Range Validation
      */
@@ -31,6 +30,102 @@
   }])
 
 
+  // ---------------------
+  // Directive and Service
+  // ---------------------
+
+  .directive('validFile',function(){
+    return {
+        restrict: 'A',
+        require: 'ngModel',
+        link:function(scope,el,attrs,ctrl){
+            ctrl.form3.logo.$setValidity('validFile', false );
+            //change event is fired when file is selected
+            el.bind('change',function(){
+                ctrl.$setValidity('validFile', el.val() != '');
+                scope.$apply(function(){
+                    ctrl.$setViewValue(el.val());
+                    ctrl.$render();
+                });
+            });
+        }
+    }
+})
+
+
+  // -------------------------------------------
+  // Directive and Service for fileToUpload
+  // -------------------------------------------
+
+
+      .directive('fileModel', ['$parse', function ($parse) {
+          return {
+              restrict: 'A',
+              link: function(scope, element, attrs) {
+                  var model = $parse(attrs.fileModel);
+                  var modelSetter = model.assign;
+
+                  element.bind('change', function(){
+                      scope.$apply(function(){
+                          modelSetter(scope, element[0].files[0]);
+                      });
+                  });
+              }
+          };
+      }])
+
+      /*
+      .directive('fileModel',  function () {
+    return {
+    restrict: 'EA',
+        scope: {
+            setFileData: "&"
+        },
+    link: function(scope, element, attrs) {
+          var elementError=  angular.element(errorMessage);
+           elementError[0].innerText='';
+
+        element.on('change', function(){
+            scope.$apply(function(){
+                var val = element[0].files[0];
+                scope.setFileData({ value: val });
+
+            });
+        });
+    }
+   };
+})
+*/
+
+// We can write our own fileUpload service to reuse it in the controller
+.service('fileUpload', ['$http', function ($http) {
+    this.uploadFileToUrl = function(logo, members, clubName, category, country, state, members, firstName, lastName, email){
+
+         var fd = new FormData();
+         fd.append('logo', logo);
+        fd.append('members', members);
+        fd.append('clubName', clubName);
+        fd.append('category',  category);
+        fd.append('country', country);
+        fd.append('state', state);
+        fd.append('firstName', firstName);
+        fd.append('lastName', lastName);
+        fd.append('email', email);
+
+         $http.post('SignupServer.php', fd, {
+             transformRequest: angular.identity,
+             headers: {'Content-Type': undefined ,'Process-Data': false}
+         })
+         .success(function(){
+            console.log("Success");
+         })
+         .error(function(){
+            console.log("Success");
+         });
+     }
+ }])
+
+
 
 
 
@@ -38,25 +133,17 @@
   // -------------------
   // controller phase
   // -------------------
-  .controller('index', ['$scope', '$injector', function($scope, $injector) {
+  .controller('index', ['$scope', '$injector', '$document', 'fileUpload', function($scope, $injector,  $document, fileUpload) {
     // Injector
 
     var $validationProvider = $injector.get('$validation');
     var $http = $injector.get('$http');
 
-    // Initial Value
-    $scope.form = {
-      requiredCallback: 'required',
-      checkValid: $validationProvider.checkValid,
-      submit: function() {
-        // angular validation 1.2 can reduce this procedure, just focus on your action
-        // $validationProvider.validate(form);
-      },
-      reset: function() {
-        // angular validation 1.2 can reduce this procedure, just focus on your action
-        // $validationProvider.reset(form);
-      }
-    };
+      //$http.defaults.headers.post['Accept'] = 'application/json, text/javascript';
+      //$http.defaults.headers.post['Content-Type'] = 'multipart/form-data; charset=utf-8';
+
+      //$scope.model = {};
+      //$scope.selectedFile = [];
 
 
     $scope.form3 = {
@@ -71,30 +158,31 @@
       }
     };
 
+      /*
+      $scope.onFileSelect = function ($files) {
+          $scope.selectedFile = $files;
+      };
+       */
 
     // Callback method
     $scope.success = function(message) {
-     $http.post('SignupServer.php', {
-            'clubName' : $scope.form3.clubName, 
-            'category' : $scope.form3.category, 
-            'country' : $scope.form3.country, 
-            'state' : $scope.form3.state, 
-            'logo' : $scope.form3.logo,
-            'members' : $scope.form3.members,
-            'firstName' : $scope.form3.firstName, 
-            'lastName' : $scope.form3.lastName, 
-            'email' : $scope.form3.email
-        }
-    ).success(function (data, status, headers, config) {
-        console.log(data);
-         alert('Sucesssssssssss');
-    
-    });
+        //file = $scope.fileToUpload;
+        logo = $scope.myLogo;
+        members = $scope.myMembers;
+        clubName = $scope.form3.clubName;
+        category = $scope.form3.category;
+        country = $scope.form3.country;
+        state = $scope.form3.state;
+        firstName = $scope.form3.firstName;
+        lastName = $scope.form3.lastName;
+        email = $scope.form3.email;
+
+        fileUpload.uploadFileToUrl(logo, members, clubName, category, country,state,members, firstName,lastName, email );
     };
 
     $scope.error = function(message) {
-      alert('Errrrooorrr');
-      //alert(message);
+     var elementError=  angular.element(errorMessage);
+      elementError[0].innerText='Select a valid file.';
     };
 
   }]);

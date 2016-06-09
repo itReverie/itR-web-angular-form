@@ -75,14 +75,42 @@
 
 <div class="col-xs-12 text-align-center space-between">
     Your Logo: 
-    <input type="file" name="logo" id="logo" ng-model="form3.logo" valid-method="submit" message-id="logoSubmit" />
-    <span id="logoSubmit"></span> 
+    <input
+    file-model="myLogo"
+    required 
+    type="file" 
+    accept="image/*"
+    validFile />
+
+    <!--
+
+    ng-model="form3.logo"
+
+    <input
+            ng-file-select="onFileSelect($files)"
+            required
+            type="file"
+            id="file"
+            name="file"
+            ng-value="fileToUpload"
+            value="{{fileToUpload}}"
+            file-model="fileToUpload"
+            set-file-data="fileToUpload = value;"
+            accept="image/*"
+            validFile />
+            -->
+</div>
+<p class="col-xs-12 text-align-center space-between errorMessage .validation-invalid" style="color: #FF4136;" name="errorMessage" id="errorMessage"></p>
 </div>
 
 <div class="col-xs-12 text-align-center space-between">
-    Your Members List: 
-    <input type="file" name="members" id="members"   ng-model="form3.members"  valid-method="submit" message-id="membersSubmit" />
-    <span id="membersSubmit"></span> 
+    Your Members List:
+    <input
+            file-model="myMembers"
+            required
+            type="file"
+            accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+            validFile />
 </div>
 
 

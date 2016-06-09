@@ -5,10 +5,11 @@ include("PHPMailer/class.smtp.php");
 
 
 
+
 function validateExcelFile($temporary_file)
 {
     $valid = false;
-    $types = array('Excel2007', 'Excel5');//,'application/vnd.ms-excel','text/xls','text/xlsx'
+    $types = array('Excel2007', 'Excel5','application/vnd.openxmlformats-officedocument.spreadsheetml.sheet','text/xls','text/xlsx');//
 
 foreach ($types as $type) {
       print("<br/> Type File:".$type);
@@ -107,8 +108,8 @@ function sendEmail($clubName, $category, $country, $state, $firstName, $lastName
 
 
 $host = "smtp.gmail.com";//ssl://
-$username = "youremail@gmail.com";
-$password = "yourpassword";
+$username = "brendadhk@gmail.com";
+$password = "ITz3L123@@";
 $Port = 587;
 $file_dir  = $_SERVER['DOCUMENT_ROOT'] . "/uploads/";
 
@@ -149,8 +150,8 @@ $mail->SetFrom( $username, $username);
 $mail->Subject   = $email_subject;
 $mail->Body      = $email_body;
 $mail->AddAddress( $to , $company );
-//$mail->AddAttachment( $file_dir.$logo);
-//$mail->AddAttachment( $file_dir.$members);
+$mail->AddAttachment( $file_dir.$logo);
+$mail->AddAttachment( $file_dir.$members);
 
 if(!$mail->Send()) {
     echo "<br/>  Mailer Error: " . $mail->ErrorInfo;
@@ -168,25 +169,39 @@ if(!$mail->Send()) {
   }
 
 
-  $data = file_get_contents("php://input");
-  $dataJsonDecode     = json_decode($data);
-  
+    //$_POST = json_decode(file_get_contents('php://input'), true);
 
-  //Loading the images into the server
-  //$message = loadFile('Image', 'logo');
-  //$message = loadFile('Excel', 'members');
-  
+
+  //$data = file_get_contents("php://input");
+  //$dataJsonDecode     = json_decode($data);
+  //$clubName = $dataJsonDecode->clubName;
+  //$category = $dataJsonDecode->category;
+  //$country = $dataJsonDecode->country;
+  //$state = $dataJsonDecode->state;
+  //$firstName = $dataJsonDecode->firstName;
+  //$lastName = $dataJsonDecode->lastName;
+  //$email = $dataJsonDecode->email;
+  //$logo = $dataJsonDecode->logo;
+  //$members = $dataJsonDecode->members;
+
+
+
+
   //Getting the information
-  $clubName = $dataJsonDecode->clubName;
-  $category = $dataJsonDecode->category;
-  $country = $dataJsonDecode->country;
-  $state = $dataJsonDecode->state;
-  $firstName = $dataJsonDecode->firstName;
-  $lastName = $dataJsonDecode->lastName;
-  $email = $dataJsonDecode->email;
-  $logo = $dataJsonDecode->logo;
-  $members = $dataJsonDecode->members;
 
+  $clubName = $_POST['clubName'];
+  $category = $_POST['category'];
+  $country = $_POST['country'];
+  $state = $_POST['state'];
+  $firstName = $_POST['firstName'];
+  $lastName = $_POST['lastName'];
+  $email = $_POST['email'];
+  $logo = $_FILES[logo]['name'];
+  $members = $_FILES[members]['name'];
+
+    //Loading the files into the server
+    $message = loadFile('Image', 'logo');
+    $message = loadFile('Excel', 'members');
 
   //Validate that the fields are not empty. It is validated in the client side. Double validation just in case.
   //if(empty($firstName)|| empty($lastName)|| empty($email))
@@ -194,7 +209,7 @@ if(!$mail->Send()) {
 
 
   //Send Email
-  sendEmail( $clubName, $category, $country, $state, $firstName, $lastName, $email, $logo, $members  );
+  sendEmail( $clubName, $category, $country, $state, $firstName, $lastName, $email, $logo, $members );
 
 
   //header("Location:  https://www.bpoint.com.au/payments/SPORTSKING");
